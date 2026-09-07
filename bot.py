@@ -1,46 +1,41 @@
-import yfinance as yf
+from flask import Flask
+import threading
+import os
+
+# --- Ye Web Server Render ko khush rakhne ke liye hai ---
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is LIVE - Forex Bot Running!"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+# --- Tumhara Asal Bot ka Code Yahan Se Shuru Hoga ---
+# Neeche apna purana bot ka code paste karo
+# Agar tumhara purana code is tarah hai to waisa hi rehne do
+
+# Example ke liye me tumhara purana code yahan import kar raha hun
+# Tum bas iske neeche apna pura purana code copy kar dena
+
+# --- BOT START ---
 import time
-import sys
-from datetime import datetime
+# Yahan se tumhara original bot.py ka code shuru karo...
+# [TUMHARA PURANA CODE YAHAN PASTE KARO]
 
-def get_signal(symbol="EURUSD=X"):
-    try:
-        data = yf.download(symbol, period="1d", interval="1m", progress=False)
-        if len(data) < 2:
-            return "WAIT"
-        
-        last = data.iloc[-1]
-        prev = data.iloc[-2]
+# Agar tumhare bot me last me bot.infinity_polling() ya app.run() jaisa kuch hai to wo sab se neeche hona chahiye
 
-        # Real logic
-        if last['Close'] > last['Open']:
-            return "CALL 🔼"
-        else:
-            return "PUT 🔽"
-    except:
-        return "WAIT"
-
-def start_bot():
-    symbol = "EURUSD=X"
-    print(f"BOT STARTED: {symbol}")
-    print("Candle close ka wait kar raha hun...")
-    
-    while True:
-        now = datetime.now()
-        sec_left = 60 - now.second
-
-        if sec_left <= 5 and sec_left >= 1:
-            sys.stdout.write(f"\r⏳ {sec_left}   ")
-            sys.stdout.flush()
-            time.sleep(1)
-
-            if sec_left == 1:
-                sig = get_signal(symbol)
-                entry_time = now.strftime("%H:%M:%S")
-                sys.stdout.write(f"\r✅ SIGNAL: {sig} | TIME: {entry_time} | NEXT CANDLE      \n")
-                time.sleep(1.5)
-        
-        time.sleep(0.1)
+# --- END ---
 
 if __name__ == "__main__":
-    start_bot()
+    # Web server alag thread me chalao
+    threading.Thread(target=run_web, daemon=True).start()
+    
+    # Yahan apne bot ko start karne wala function call karo
+    # Jaise: main() ya bot.polling()
+    print("Bot starting...")
+    # TUMHARA BOT START CODE YAHAN LIKHO
+    # For example agar tumhare pas bot.polling() hai to:
+    # bot.infinity_polling()
